@@ -356,9 +356,18 @@ class MainWatermarkingApp:
             elif algorithm == "DWT":
                 level = self.dwt_level.get()
                 wavelet = self.dwt_wavelet.get()
+                
+                # Đảm bảo thủy vân được nhị phân hóa đúng cách
+                if len(self.watermark_img.shape) > 2:
+                    watermark_gray = cv2.cvtColor(self.watermark_img, cv2.COLOR_BGR2GRAY)
+                else:
+                    watermark_gray = self.watermark_img.copy()
+                    
+                _, watermark_bin = cv2.threshold(watermark_gray, 128, 255, cv2.THRESH_BINARY)
+                
                 self.watermarked_img = embed_dwt(
                     self.cover_img, 
-                    self.watermark_img, 
+                    watermark_bin, 
                     alpha=0.1, 
                     wavelet=wavelet, 
                     level=level, 
@@ -448,8 +457,16 @@ class MainWatermarkingApp:
                 level = self.dwt_level.get()
                 wavelet = self.dwt_wavelet.get()
                 # Trích xuất thủy vân với các tham số chính xác
+                
+                # Lấy kích thước dự kiến của thủy vân
+                h, w = self.watermarked_img.shape[:2] if len(self.watermarked_img.shape) == 3 else self.watermarked_img.shape
+                wm_height = h // (2**level)
+                wm_width = w // (2**level)
+                watermark_shape = (wm_height, wm_width)
+                
                 self.extracted_watermark = extract_dwt(
                     self.watermarked_img,
+                    original_watermark_shape=watermark_shape,
                     key=key,
                     wavelet=wavelet,
                     level=level
