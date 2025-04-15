@@ -88,22 +88,25 @@ Thực thi:
 ```
 Kết quả
 ```bash
-'Chất lượng hình ảnh:'
-- PSNR: 33.13 dB - Vẫn trong dải "Trung bình" (30-40 dB), chấp nhận được
-- SSIM: 0.9278 - Khá cao, cấu trúc hình ảnh được bảo toàn tốt
-- MSE: 31.64 - Cao hơn trước do tăng alpha, nhưng chấp nhận được
+## Chất lượng hình ảnh:
+'PSNR: 33.13 dB' - Mức trung bình (30-40 dB), có thể thấy chút khác biệt nhưng chấp nhận được
+'SSIM: 0.9278' - Rất tốt, cấu trúc hình ảnh sau khi nhúng vẫn được bảo toàn cao
+'MSE: 31.64' - Sai số trung bình ở mức hợp lý
 
-'Độ bền với các tấn công:'
-- Không tấn công: 10.7% - Khá tốt, đã giảm so với trước
-- **Nhiễu Gaussian: 17.1% - Cải thiện đáng kể (trước đó là 30.8%)**
-- Nén JPEG: 10.9% - Rất tốt, gần như không ảnh hưởng
-- Lọc trung vị: 13.5% - Cải thiện tốt (trước đó là 18.1%)
-- Cắt ảnh: 51.7% - Vẫn kém
-- Xoay 2 độ: 51.2% - Vẫn kém
+## Khả năng chống tấn công (BER):
+'Không tấn công: 10.66%' - Vẫn có sai số cơ bản, cần cải thiện
+'Nhiễu Gaussian: 16.50%' - Khả năng chống nhiễu tương đối tốt
+'Nén JPEG (70%): 10.89%' - Xuất sắc, hầu như không bị ảnh hưởng bởi nén
+'Lọc trung vị: 13.49%' - Khá tốt, thủy vân vẫn giữ được thông tin
+'Cắt ảnh: 51.69%' - Kém, không giữ được thông tin (gần 50% tương đương đoán ngẫu nhiên)
+'Xoay 2 độ: 51.15%' - Kém, không chống được biến đổi hình học nhỏ
 
-'Đánh giá chung:'
-- Việc tăng block_size lên 16 và alpha lên 8.0 đã cải thiện rõ rệt khả năng chống nhiễu và lọc
-- Đánh đổi hợp lý giữa chất lượng ảnh và độ bền của thủy vân
-- Thuật toán này phù hợp với ứng dụng không yêu cầu chống tấn công biến đổi hình học
-- Khả năng chống nén JPEG rất tốt - đây là lợi thế lớn vì ảnh thường được lưu dưới dạng JPEG
+## Kết luận:
+'Ưu điểm': Thuật toán Wu-Lee có sức mạnh đáng kể trong việc chống lại nén JPEG và nhiễu, phù hợp với ứng dụng thực tế khi ảnh thường được lưu ở định dạng nén.
+
+'*Hạn chế': Rất yếu với các biến đổi hình học như cắt và xoay. Đây là hạn chế lớn nếu ứng dụng trong môi trường có thể xảy ra các biến đổi này.
+
+'Đánh đổi': Thay đổi tham số (alpha=8.0, block_size=16) đã cải thiện được khả năng chống nhiễu so với cấu hình mặc định nhưng vẫn duy trì được chất lượng hình ảnh ở mức chấp nhận được.
+
+'Hướng cải tiến': Kết hợp với kỹ thuật dựa trên điểm đặc trưng bất biến với phép biến đổi hình học để cải thiện khả năng chống tấn công cắt và xoay.
 ```
