@@ -11,6 +11,12 @@ Nghiên cứu kỹ thuật thủy vân số và xây dựng ứng dụng bảo v
 ```bash
 pip install -r requirements.txt
 ```
+
+## 🗿 Chạy chương trình
+```bash
+python main_watermarking_app.py
+```
+
 ## Tham khảo bảng PSNR:
 ```bash
 PSNR (dB)   | Đánh giá độ giống nhau
@@ -111,7 +117,7 @@ Kết quả
 'Hướng cải tiến': Kết hợp với kỹ thuật dựa trên điểm đặc trưng bất biến với phép biến đổi hình học để cải thiện khả năng chống tấn công cắt và xoay.
 ```
 
-# Hướng dẫn sử dụng các thuật toán thủy vân ảnh
+# 💻 Hướng dẫn sử dụng các thuật toán thủy vân ảnh
 ```bash
 ## 1. Thuật toán Wu-Lee
 - **Kích thước khối**: 8-16 là tốt nhất cho hầu hết ảnh. Khối lớn (>16) ít hiển thị nhưng kém bền vững, khối nhỏ (4-8) bền vững hơn nhưng có thể ảnh hưởng đến chất lượng hình ảnh.
