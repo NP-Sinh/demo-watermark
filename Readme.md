@@ -62,6 +62,53 @@ Kết luận: Phương pháp LSB thích nghi đã được sửa thành công v�
 
 ```
 
+## 🏷️ Thuật toán DCT:
+Thực thi:
+```bash
+1. "Nhúng thủy vân (`dct_watermark_embed`)"
+   - Chuyển ảnh gốc (cover image) sang miền tần số theo khối 8×8 bằng DCT.  
+   - Chọn các khối “phù hợp” dựa trên độ biến thiên (`variance`) hoặc cường độ kết cấu (`texture`).  
+   - Với mỗi khối, điều chỉnh hệ số tần số trung bình (ví dụ vị trí `(1,3)`) để mã hóa bit thủy vân (1 hoặc 0) dựa trên cường độ nhúng `alpha`, có thể kết hợp lượng tử hóa để tăng độ bền.  
+   - Áp dụng IDCT để tái tạo khối và ghép lại ảnh.  
+   - Tính và in ra chỉ số PSNR và SSIM để đánh giá chất lượng ảnh đã nhúng.  
+
+2. "Trích xuất thủy vân (`dct_watermark_extract`)"  
+   - Tương tự, chuyển ảnh chứa thủy vân sang miền DCT khối 8×8.  
+   - Đọc dấu (dương/âm) của hệ số tại vị trí đã nhúng để xác định bit thủy vân.  
+   - Tái tạo ma trận nhị phân của thủy vân, rồi làm sạch kết quả bằng ngưỡng và phép hình thái học (mở).  
+
+3. "Chọn khối phù hợp"  
+   - `_get_suitable_blocks`: lọc khối theo phương pháp so sánh độ phương sai với ngưỡng.  
+   - `_get_textured_blocks`: dùng bộ lọc Sobel để tìm khối có cường độ cạnh cao (kết cấu tốt).
+
+4. "Xử lý DCT từng khối (`_process_dct_blocks`)"  
+   - Là hàm chung cho cả nhúng và trích xuất, lặp qua từng khối 8×8, thực hiện DCT/IDCT, và điều chỉnh hoặc đọc hệ số tần số trung bình.
+
+5. "Đánh giá độ bền (`evaluate_robustness`)"  
+   - Tự động nhúng thủy vân rồi mô phỏng các “tấn công” phổ biến: nén JPEG, nhiễu Gaussian, xoay, thu phóng, cắt xén.  
+   - Trích xuất lại thủy vân sau mỗi tấn công, tính hệ số tương quan (correlation) và tỷ lệ lỗi bit (BER) để đo độ bền.
+
+6. "Hiển thị kết quả (`plot_results`)"  
+   - Dùng Matplotlib vẽ ảnh gốc, thủy vân, ảnh đã nhúng, thủy vân trích xuất và kết quả sau các tấn công.
+
+7. "Khối lệnh chính (`if __name__ == "__main__":`)"  
+   - Đọc ảnh cover và watermark, nhị phân hóa watermark, gọi hàm nhúng với cấu hình mạnh (alpha lớn, dùng tất cả khối).  
+   - Lưu ảnh đã nhúng và ảnh trích xuất.  
+   - Tính tương quan, BER, độ chính xác, và lưu thêm các bản nhị phân để so sánh.
+```
+Kết quả
+```bash
+Kết quả thu được từ lần chạy thử với cover image kích thước 1632×2912 và watermark 51×91 (tương đương 4 641 bit) như sau:
+
+- "Chất lượng ảnh đã nhúng"  
+  - "PSNR ≈ 39.96 dB": mức này cho thấy độ méo nhỏ, ảnh watermarked gần như không khác biệt về mặt số liệu so với ảnh gốc (thường > 35 dB là rất tốt cho ứng dụng thủy vân).  
+  - "SSIM ≈ 0.9918": giá trị rất sát 1, nghĩa là cấu trúc hình ảnh gần như được giữ nguyên hoàn toàn, đảm bảo tính ẩn (imperceptibility).  
+
+- "Khả năng trích xuất watermark"  
+  - "Tương quan (correlation) ≈ 0.7959": mức tương quan trên 0.7–0.8 cho thấy watermark có thể trích xuất tương đối chính xác, nhưng vẫn còn sai lệch.  
+  - "Tỷ lệ lỗi bit (BER) ≈ 6.18 %" (287/4 641 bit): nghĩa là khoảng 1 trong 16 bit bị sai, tương đương "độ chính xác ~93.82 %".  
+```
+
 ## 🏷️ Thuật toán Wu-lee:
 Thực thi:
 ```bash

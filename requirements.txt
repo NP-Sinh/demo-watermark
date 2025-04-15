@@ -6,3 +6,4 @@ matplotlib>=3.4.2
 pytest>=6.2.4
 cryptography==42.0.5
 pillow
+scikit-learn
