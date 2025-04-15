@@ -1,0 +1,6 @@
+key: 42
+wavelet: haar
+level: 2
+subband: LL
+alpha: 0.1
+shape: 408 728

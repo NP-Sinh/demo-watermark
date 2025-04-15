@@ -1,0 +1,10 @@
+{
+  "key": 12345,
+  "shape": [
+    100,
+    300
+  ],
+  "threshold": 30,
+  "hash": "9b8ec3e60047a097ec5be4fbe2decf2d",
+  "num_positions": 240000
+}
