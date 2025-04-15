@@ -55,3 +55,55 @@ Kết quả đã khả quan hơn nhiều và có một số điểm đáng chú 
 Kết luận: Phương pháp LSB thích nghi đã được sửa thành công và hoạt động tốt, có cải thiện nhẹ đối với nhiễu Gaussian và lọc trung vị, nhưng vẫn yếu với nén JPEG. Đây là giới hạn của LSB - nếu cần độ bền cao hơn, nên xem xét DCT hoặc DWT.
 
 ```
+
+## 🏷️ Thuật toán Wu-lee:
+Thực thi:
+```bash
+1. **Đọc các tập tin đầu vào**:
+   - Đọc ảnh gốc (`cover.png`) - ảnh cần được bảo vệ bản quyền
+   - Đọc ảnh thủy vân (`watermark.jpg`) - ảnh chứa thông tin nhận dạng/bản quyền
+
+2. **Thiết lập tham số tối ưu**:
+   - `key = 12345` - khóa bảo mật để mã hóa/giải mã
+   - `block_size = 16` - kích thước block lớn hơn giúp tăng khả năng chống biến đổi hình học
+   - `alpha = 8.0` - cường độ nhúng cao hơn giúp tăng khả năng chống nhiễu
+   - `threshold_ratio = 0.3` - chỉ chọn 30% block có phương sai lớn nhất
+
+3. **Quá trình nhúng thủy vân**:
+   - Nhúng thủy vân vào ảnh gốc sử dụng thuật toán Wu-Lee
+   - Lưu kết quả trong thư mục `WU_LEE`
+
+4. **Trích xuất và kiểm tra**:
+   - Trích xuất thủy vân từ ảnh đã nhúng
+   - Lưu thủy vân đã trích xuất để kiểm tra bằng mắt
+
+5. **Đánh giá độ bền vững**:
+   - Kiểm tra khả năng chống lại các loại tấn công:
+     * Nhiễu Gaussian
+     * Nén JPEG
+     * Lọc trung vị
+     * Cắt ảnh
+     * Xoay ảnh
+   - Tính toán và in BER (Bit Error Rate) cho mỗi loại tấn công
+```
+Kết quả
+```bash
+'Chất lượng hình ảnh:'
+- PSNR: 33.13 dB - Vẫn trong dải "Trung bình" (30-40 dB), chấp nhận được
+- SSIM: 0.9278 - Khá cao, cấu trúc hình ảnh được bảo toàn tốt
+- MSE: 31.64 - Cao hơn trước do tăng alpha, nhưng chấp nhận được
+
+'Độ bền với các tấn công:'
+- Không tấn công: 10.7% - Khá tốt, đã giảm so với trước
+- **Nhiễu Gaussian: 17.1% - Cải thiện đáng kể (trước đó là 30.8%)**
+- Nén JPEG: 10.9% - Rất tốt, gần như không ảnh hưởng
+- Lọc trung vị: 13.5% - Cải thiện tốt (trước đó là 18.1%)
+- Cắt ảnh: 51.7% - Vẫn kém
+- Xoay 2 độ: 51.2% - Vẫn kém
+
+'Đánh giá chung:'
+- Việc tăng block_size lên 16 và alpha lên 8.0 đã cải thiện rõ rệt khả năng chống nhiễu và lọc
+- Đánh đổi hợp lý giữa chất lượng ảnh và độ bền của thủy vân
+- Thuật toán này phù hợp với ứng dụng không yêu cầu chống tấn công biến đổi hình học
+- Khả năng chống nén JPEG rất tốt - đây là lợi thế lớn vì ảnh thường được lưu dưới dạng JPEG
+```
