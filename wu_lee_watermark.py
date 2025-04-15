@@ -413,6 +413,12 @@ def extract_wu_lee(watermarked_img: np.ndarray, key: int,
 
 def calculate_ber(original, extracted):
     """Tính toán Bit Error Rate giữa watermark gốc và watermark trích xuất"""
+    # Chuyển đổi sang grayscale nếu là ảnh màu
+    if len(original.shape) > 2:
+        original = cv2.cvtColor(original, cv2.COLOR_BGR2GRAY)
+    if len(extracted.shape) > 2:
+        extracted = cv2.cvtColor(extracted, cv2.COLOR_BGR2GRAY)
+    
     if original.shape != extracted.shape:
         # Resize về cùng kích thước
         extracted = cv2.resize(extracted, (original.shape[1], original.shape[0]))
