@@ -38,23 +38,23 @@ BER     | Tỉ lệ bit sai (cho watermark)         | 0 → 1     | Càng thấp
 
 Kết quả đã khả quan hơn nhiều và có một số điểm đáng chú ý:
 
-1. **Cơ bản**: Cả hai phương pháp đều đạt BER = 0.000000, tức là hoàn hảo khi không có tác động bên ngoài.
+1. "Cơ bản": Cả hai phương pháp đều đạt BER = 0.000000, tức là hoàn hảo khi không có tác động bên ngoài.
 
-2. **Nhiễu Gaussian**:
+2. "Nhiễu Gaussian":
    - LSB thông thường: 0.16692
    - LSB thích nghi: 0.16512
    - LSB thích nghi tốt hơn một chút, tuy không đáng kể.
 
-3. **Nén JPEG**:
+3. "Nén JPEG":
    - Cả hai phương pháp đều yếu (BER ~0.499)
    - Đây là điểm yếu lớn nhất của LSB.
 
-4. **Lọc trung vị**:
+4. "Lọc trung vị":
    - LSB thông thường: 0.43521
    - LSB thích nghi: 0.41290
    - LSB thích nghi tốt hơn khoảng 2%.
 
-5. **Chất lượng ảnh**:
+5. "Chất lượng ảnh":
    - PSNR: 68.86 dB (rất tốt)
    - SSIM: ~1.0000 (hoàn hảo)
 
@@ -65,25 +65,25 @@ Kết luận: Phương pháp LSB thích nghi đã được sửa thành công v�
 ## 🏷️ Thuật toán Wu-lee:
 Thực thi:
 ```bash
-1. **Đọc các tập tin đầu vào**:
+1. "Đọc các tập tin đầu vào":
    - Đọc ảnh gốc (`cover.png`) - ảnh cần được bảo vệ bản quyền
    - Đọc ảnh thủy vân (`watermark.jpg`) - ảnh chứa thông tin nhận dạng/bản quyền
 
-2. **Thiết lập tham số tối ưu**:
+2. "Thiết lập tham số tối ưu":
    - `key = 12345` - khóa bảo mật để mã hóa/giải mã
    - `block_size = 16` - kích thước block lớn hơn giúp tăng khả năng chống biến đổi hình học
    - `alpha = 8.0` - cường độ nhúng cao hơn giúp tăng khả năng chống nhiễu
    - `threshold_ratio = 0.3` - chỉ chọn 30% block có phương sai lớn nhất
 
-3. **Quá trình nhúng thủy vân**:
+3. "Quá trình nhúng thủy vân":
    - Nhúng thủy vân vào ảnh gốc sử dụng thuật toán Wu-Lee
    - Lưu kết quả trong thư mục `WU_LEE`
 
-4. **Trích xuất và kiểm tra**:
+4. "Trích xuất và kiểm tra":
    - Trích xuất thủy vân từ ảnh đã nhúng
    - Lưu thủy vân đã trích xuất để kiểm tra bằng mắt
 
-5. **Đánh giá độ bền vững**:
+5. "Đánh giá độ bền vững":
    - Kiểm tra khả năng chống lại các loại tấn công:
      * Nhiễu Gaussian
      * Nén JPEG
@@ -120,36 +120,36 @@ Kết quả
 # 💻 Hướng dẫn sử dụng các thuật toán thủy vân ảnh
 ```bash
 ## 1. Thuật toán Wu-Lee
-- **Kích thước khối**: 8-16 là tốt nhất cho hầu hết ảnh. Khối lớn (>16) ít hiển thị nhưng kém bền vững, khối nhỏ (4-8) bền vững hơn nhưng có thể ảnh hưởng đến chất lượng hình ảnh.
-- **Alpha (cường độ)**: 5-10 là cân bằng tốt. Giá trị cao hơn (>10) tăng độ bền vững nhưng giảm chất lượng. Giá trị thấp hơn (<5) giữ chất lượng nhưng dễ mất khi chỉnh sửa ảnh.
-- **Sử dụng khi**: Cần độ bền vững cao đối với các tác động như nén, lọc, và cắt ảnh.
+- "Kích thước khối" : 8-16 là tốt nhất cho hầu hết ảnh. Khối lớn (>16) ít hiển thị nhưng kém bền vững, khối nhỏ (4-8) bền vững hơn nhưng có thể ảnh hưởng đến chất lượng hình ảnh.
+- "Alpha (cường độ)": 5-10 là cân bằng tốt. Giá trị cao hơn (>10) tăng độ bền vững nhưng giảm chất lượng. Giá trị thấp hơn (<5) giữ chất lượng nhưng dễ mất khi chỉnh sửa ảnh.
+- "Sử dụng khi": Cần độ bền vững cao đối với các tác động như nén, lọc, và cắt ảnh.
 
 ## 2. Thuật toán LSB (Least Significant Bit)
-- **Số bit LSB**: 1-2 bit cho ảnh thông thường. 3-4 bit cho dung lượng thủy vân lớn nhưng sẽ dễ nhìn thấy.
-- **Chế độ**: "Cơ bản" đơn giản và nhanh. "Thích nghi" thông minh hơn, nhúng vào vùng chi tiết phức tạp để giảm khả năng phát hiện.
-- **Sử dụng khi**: Cần nhúng nhiều dữ liệu hoặc cho ứng dụng steganography. Không phù hợp khi cần độ bền vững cao vì rất dễ bị mất khi chỉnh sửa ảnh.
+- "Số bit LSB": 1-2 bit cho ảnh thông thường. 3-4 bit cho dung lượng thủy vân lớn nhưng sẽ dễ nhìn thấy.
+- "Chế độ": "Cơ bản" đơn giản và nhanh. "Thích nghi" thông minh hơn, nhúng vào vùng chi tiết phức tạp để giảm khả năng phát hiện.
+- "Sử dụng khi": Cần nhúng nhiều dữ liệu hoặc cho ứng dụng steganography. Không phù hợp khi cần độ bền vững cao vì rất dễ bị mất khi chỉnh sửa ảnh.
 
 ## 3. Thuật toán DCT (Discrete Cosine Transform)
-- **Kích thước khối**: 8x8 là tiêu chuẩn và tương thích với JPEG. Khối lớn hơn (16-32) có thể tốt hơn cho ảnh độ phân giải cao.
-- **Hệ số nhúng**: 20-40 cung cấp cân bằng tốt. Giá trị cao (>50) cho độ bền vững tốt hơn nhưng có thể gây méo ảnh.
-- **Sử dụng khi**: Cần khả năng chống nén JPEG tốt và độ bền vững trung bình đến cao.
+- "Kích thước khối": 8x8 là tiêu chuẩn và tương thích với JPEG. Khối lớn hơn (16-32) có thể tốt hơn cho ảnh độ phân giải cao.
+- "Hệ số nhúng": 20-40 cung cấp cân bằng tốt. Giá trị cao (>50) cho độ bền vững tốt hơn nhưng có thể gây méo ảnh.
+- "Sử dụng khi": Cần khả năng chống nén JPEG tốt và độ bền vững trung bình đến cao.
 
 ## 4. Thuật toán DWT (Discrete Wavelet Transform)
-- **Mức phân tách**: Mức 2 phù hợp với hầu hết ứng dụng. Mức 1 cho chất lượng cao hơn, mức 3 cho độ bền vững cao hơn.
-- **Wavelet**: "haar" đơn giản và nhanh. "db1", "db2" cho kết quả mượt hơn. "sym2" và "coif1" phức tạp hơn nhưng có thể cải thiện chất lượng.
-- **Sử dụng khi**: Cần độ bền vững cao đối với nhiều loại tấn công khác nhau và chất lượng hình ảnh tốt hơn so với DCT.
+- "Mức phân tách": Mức 2 phù hợp với hầu hết ứng dụng. Mức 1 cho chất lượng cao hơn, mức 3 cho độ bền vững cao hơn.
+- "Wavelet": "haar" đơn giản và nhanh. "db1", "db2" cho kết quả mượt hơn. "sym2" và "coif1" phức tạp hơn nhưng có thể cải thiện chất lượng.
+- "Sử dụng khi": Cần độ bền vững cao đối với nhiều loại tấn công khác nhau và chất lượng hình ảnh tốt hơn so với DCT.
 
 ## 5. Thuật toán Spread Spectrum
-- **Hệ số khuếch đại**: 0.05-0.2 phù hợp cho hầu hết ứng dụng. Giá trị cao hơn (>0.3) làm thủy vân bền vững hơn nhưng có thể làm giảm chất lượng hình ảnh.
-- **Độ dài chuỗi PN**: 1000-5000 phù hợp cho hầu hết ứng dụng. Chuỗi dài hơn tăng độ an toàn nhưng cũng tăng thời gian xử lý.
-- **Sử dụng khi**: Cần bảo mật cao và độ bền vững vượt trội đối với các tấn công cố ý (cắt xén, lọc, xoay ảnh).
+- "Hệ số khuếch đại": 0.05-0.2 phù hợp cho hầu hết ứng dụng. Giá trị cao hơn (>0.3) làm thủy vân bền vững hơn nhưng có thể làm giảm chất lượng hình ảnh.
+- "Độ dài chuỗi PN": 1000-5000 phù hợp cho hầu hết ứng dụng. Chuỗi dài hơn tăng độ an toàn nhưng cũng tăng thời gian xử lý.
+- "Sử dụng khi": Cần bảo mật cao và độ bền vững vượt trội đối với các tấn công cố ý (cắt xén, lọc, xoay ảnh).
 
 ## Lời khuyên khi chọn thuật toán:
-- **Cho bảo vệ bản quyền**: Wu-Lee, DWT hoặc Spread Spectrum
-- **Cho dữ liệu ẩn (steganography)**: LSB
-- **Cho ảnh sẽ được chia sẻ online (JPEG)**: DCT hoặc DWT
-- **Cho độ bền vững tối đa**: Spread Spectrum
-- **Cho cân bằng giữa chất lượng và độ bền vững**: DWT với mức phân tách 2
+- "Cho bảo vệ bản quyền": Wu-Lee, DWT hoặc Spread Spectrum
+- "Cho dữ liệu ẩn (steganography)": LSB
+- "Cho ảnh sẽ được chia sẻ online (JPEG)": DCT hoặc DWT
+- "Cho độ bền vững tối đa": Spread Spectrum
+- "Cho cân bằng giữa chất lượng và độ bền vững": DWT với mức phân tách 2
 
 Các tham số mặc định đã được tối ưu cho hầu hết các trường hợp sử dụng, chỉ nên điều chỉnh khi có yêu cầu cụ thể về chất lượng hoặc độ bền vững.
 
