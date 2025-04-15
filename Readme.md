@@ -58,8 +58,6 @@ Kết quả đã khả quan hơn nhiều và có một số điểm đáng chú 
    - PSNR: 68.86 dB (rất tốt)
    - SSIM: ~1.0000 (hoàn hảo)
 
-Kết luận: Phương pháp LSB thích nghi đã được sửa thành công và hoạt động tốt, có cải thiện nhẹ đối với nhiễu Gaussian và lọc trung vị, nhưng vẫn yếu với nén JPEG. Đây là giới hạn của LSB - nếu cần độ bền cao hơn, nên xem xét DCT hoặc DWT.
-
 ```
 
 ## 🏷️ Thuật toán DCT:
